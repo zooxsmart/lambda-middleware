@@ -80,5 +80,12 @@
     "@zooxsmart/lambda-util": "^1.0.6",
     "debug": "^4.1.1",
     "http-errors": "^1.7.3"
+  },
+  "files": [
+    "/src",
+    "/index.js"
+  ],
+  "publishConfig": {
+    "access": "public"
   }
 }
