@@ -1,0 +1,84 @@
+{
+  "name": "@zooxsmart/lambda-middleware",
+  "version": "0.1.0",
+  "description": "Simple middleware implementation for AWS Lambda",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/zooxsmart/lambda-middleware.git"
+  },
+  "keywords": [
+    "aws",
+    "lambda",
+    "middleware",
+    "ssm",
+    "error",
+    "event",
+    "hal"
+  ],
+  "author": {
+    "name": "Leandro Silva",
+    "email": "leandro.silva@zooxsmart.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zooxsmart/lambda-middleware/issues"
+  },
+  "homepage": "https://github.com/zooxsmart/lambda-middleware#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^8.1.0",
+    "@commitlint/config-conventional": "^8.1.0",
+    "aws-sdk": "^2.516.0",
+    "eslint": "^6.2.1",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-prettier": "^3.1.0",
+    "husky": "^3.0.4",
+    "lint-staged": "^9.2.3",
+    "prettier": "^1.18.2"
+  },
+  "scripts": {
+    "lint": "eslint *.js src/*.js src/**/*.js",
+    "lint-fix": "eslint --fix *.js src/*.js src/**/*.js"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "release": {
+    "tagFormat": "${version}",
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/github",
+      "@semantic-release/git"
+    ],
+    "preset": "angular"
+  },
+  "dependencies": {
+    "@zooxsmart/lambda-util": "^1.0.6",
+    "debug": "^4.1.1",
+    "http-errors": "^1.7.3"
+  }
+}
