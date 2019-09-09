@@ -33,12 +33,12 @@ decorates the output with HAL links for the entity and a custom middleware ```ge
 ### How it works
 
 This module implements the middleware pipeline in a onion style.
- 
+
 The terminology "pipeline" is often used to describe the onion. One way of looking at the "onion" is as a queue, which is first-in-first-out (FIFO) in operation. This means that the first middleware on the queue is executed first, and this invokes the next, and so on (and hence the "next" terminology)
 
 Each middleware receives the event and context, and pass to the handler only when wanting to hand off processing.
 
-A middleware can return a response immediately, for example validate in input before handling it to the handler. In this case, the pipeline will not continue and the request will not even reach the handler. 
+A middleware can return a response immediately, for example validate in input before handling it to the handler. In this case, the pipeline will not continue and the request will not even reach the handler.
 
 ### Pipeline
 
@@ -89,8 +89,40 @@ Will fetch the keys from SSM Parameter Store, embed in the destination and cache
 * ssmOptions: Will be passed to the SSM constructor
 * expiryMs: Will keep the parameters in the memory cache for expiryMs in milliseconds. Default is 10 minutes.
 
+
+#### secretsManager(keyMap, destination, { secretsManagerOptions: {}, expiryMs: 10 * 60 * 1000 })
+Will fetch the keys from AWS Secrets Manager, embed in the destination and cache the result for the specified expiryMs.
+* keyMap: A map of key names and paths in Secrets Manager. Example:
+{
+    MYSQL_HOST: '/production/MYSQL_HOST',
+    MYSQL_USER: '/production/MYSQL_USER',
+    MYSQL_PASS: '/production/MYSQL_PASS',
+}
+* destination: the destination of the parameters. Example: ```context``` . context will be used if null
+* secretsManagerOptions: Will be passed to the AWS.secretsmanager constructor
+* expiryMs: Will keep the parameters in the memory cache for expiryMs in milliseconds. Default is 10 minutes.
+
 #### Custom
 You can create a custom middleware and even call another middleware, just follow the following signature and example:
+```javascript
+const middleware = require('../lambda-middleware');
+
+module.exports = () => {
+  return async (event, context, next) => {
+    if (process.env.NODE_ENV !== 'development') {
+      const params = {};
+      await secretManager({ MYSQL: 'prod/mysql' })(event, params, (ev, ctx) => {
+        process.env.MYSQL_HOST = ctx.MYSQL.host;
+        process.env.MYSQL_USER = ctx.MYSQL.username;
+        process.env.MYSQL_PASS = ctx.MYSQL.password;
+      });
+    }
+
+    return next(event, context);
+  };
+};
+```
+
 ```javascript
 const middleware = require('../lambda-middleware');
 
@@ -112,4 +144,4 @@ module.exports = () => {
 };
 ```
 
-***Warning*** Don't forget to call ```return next(event, context)``` at the end or the pipeline will not continue and will get no response. 
+***Warning*** Don't forget to call ```return next(event, context)``` at the end or the pipeline will not continue and will get no response.

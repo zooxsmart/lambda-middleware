@@ -6,4 +6,5 @@ module.exports = {
   doNotWaitEmptyEventLoop: require('./src/middlewares/doNotWaitEmptyEventLoop'),
   halResponse: require('./src/middlewares/halResponse'),
   parameterStore: require('./src/middlewares/parameterStore'),
+  secretsManager: require('./src/middlewares/secretsManager'),
 };
