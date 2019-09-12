@@ -66,7 +66,7 @@ You can add other middlewares using the ```use(middleware)``` method and finally
 Will set ```context.callbackWaitsForEmptyEventLoop = wait;```
 
 #### errorHandler
-Will wrap the following middlewares and handler with a try/catch and return a formatted json response (recommended using http-errors)
+Will wrap the following middlewares and handler with a try/catch and return a formatted json response (recommended using http-errors). If not using http-errors, set ```expose``` to true so the message can be used. See http-errors for more details.
 
 #### eventParser({ parseBody: true })
 Will parse a body string into json and ensure the presence of pathParameters, queryStringParameters, requestContext and requestContext.authorizer.
@@ -76,6 +76,8 @@ Will decorate an entity json with the _link.self from HAL and a collection with 
 * path: the path to include in the _link.self . Fallback to the current event.path if not provided
 * collectionName: the collection name (duh) to be named in the _embedded
 * entityPath: the entity path prefix. Will append the entity id
+
+The middleware will use ```context.statusCode``` for the response with fallback to 200.
 
 #### parameterStore(keyMap, destination, { ssmOptions: {}, expiryMs: 10 * 60 * 1000 })
 Will fetch the keys from SSM Parameter Store, embed in the destination and cache the result for the specified expiryMs.

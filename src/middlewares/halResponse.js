@@ -11,7 +11,7 @@ module.exports = incomingOptions => {
   const halEntity = async (event, context, next) => {
     const entity = await next(event, context);
     const resource = hal.toHal(entity, options.path || event.path);
-    return response.createResponse(200, resource.toJSON());
+    return response.createResponse(context.statusCode || 200, resource.toJSON());
   };
 
   const halCollection = async (event, context, next) => {
@@ -24,7 +24,7 @@ module.exports = incomingOptions => {
       event.queryStringParameters,
       context.collectionCount || null,
     );
-    return response.createResponse(200, resource.toJSON());
+    return response.createResponse(context.statusCode || 200, resource.toJSON());
   };
 
   return {
