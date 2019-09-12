@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/zooxsmart/lambda-middleware/compare/1.1.0...1.1.1) (2019-09-12)
+
+
+### Bug Fixes
+
+* **halresponse:** use context.statusCode for response ([882c06e](https://github.com/zooxsmart/lambda-middleware/commit/882c06e))
+
 # [1.1.0](https://github.com/zooxsmart/lambda-middleware/compare/1.0.1...1.1.0) (2019-09-09)
 
 
